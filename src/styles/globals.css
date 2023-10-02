@@ -41,7 +41,7 @@
   --card-border-rgb: 131, 134, 135;
 
   --primary-green: 41, 123, 64;
-  --background-green: 41, 123, 64, 0.2;
+  --background-green: 41, 123, 64, 0.4;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -120,4 +120,11 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+
+/* Hero-slider */
+
+ul.slick-dots {
+  bottom: 10px !important;
 }
