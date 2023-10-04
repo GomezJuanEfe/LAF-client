@@ -1,0 +1,19 @@
+.noticia_container {
+
+}
+
+.noticia_container h2 {
+  margin: 30px 0 50px;
+  font-size: 2rem;
+  color: rgb(var(--primary-green));
+}
+
+.noticia_container p {
+  margin-bottom: 30px;
+}
+
+.noticia_container p span {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: rgb(var(--primary-green));
+}

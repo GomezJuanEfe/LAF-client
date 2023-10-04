@@ -1,91 +1,150 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
+import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import Image from "next/image";
+import styles from '@/styles/Home.module.css';
+import Hero from "@/components/blocks/Hero";
+import Head from "next/head";
+import Noticias from "@/components/blocks/Noticias";
+import Recursos from "@/components/blocks/Recursos";
 
-const inter = Inter({ subsets: ['latin'] })
+const Home = ({ homePage, latestNews, apiUrl }) => {
+  const {
+    seo,
+    blocks: [{Images: {data: heroImages}}]
+  } = homePage;
 
-export default function Home() {
   return (
     <>
       <Head>
-        <title>Liga Antioqueña de Fútbol</title>
-        <meta name="description" content="Liga antioqueña de futbol - la entidad del fútbol aficionado de los atioqueños" />
+        <title>{seo.metaTitle}</title>
+        <meta name="description" content={seo.metaDescription} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <main className={`${styles.main} ${inter.className}`}>
-
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-        </div>
-
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
+      <main>
+        <Hero>
+          {
+            heroImages.map(item => {
+              return (
+                  <div className={styles.image_container} key={item.attributes.url}>
+                    <Image
+                      alt="LAF hero image"
+                      src={`${apiUrl}${item.attributes.url}`}
+                      fill={true}
+                      key={item.attributes.url}
+                      style={{
+                        objectFit: 'cover'
+                      }}
+                      sizes="100vw"
+                    />
+                  </div>
+              )
+            })
+          }
+        </Hero>
+        <div className="section-container">
+          <div className="two-columns-right">
+            <Noticias data={latestNews} apiUrl={apiUrl} />
+            <Recursos />
+          </div>
         </div>
       </main>
     </>
   )
+}
+
+export default Home
+
+export const getStaticProps = async () => {
+
+  const API_URL = (process.env.API_BASE_URL).slice(0, -1);
+
+  const client = new ApolloClient({
+    uri: `${API_URL}/graphql`,
+    cache: new InMemoryCache()
+  });
+
+  const {data: homePage} = await client.query({
+    query: gql`
+      query homePage {
+        page (id: 1) {
+          data {
+            attributes {
+              title
+              seo {
+                metaTitle
+                metaDescription
+                metaImage {
+                  data {
+                    attributes {
+                      url
+                      width
+                      height
+                    }
+                  }
+                }
+              }
+              blocks {
+                __typename
+                ...on ComponentBlocksHero {
+                  id
+                  Images {
+                    data {
+                      attributes {
+                        url
+                        width
+                        height
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `
+  });
+
+  const { data: latestNews } = await client.query({
+    query: gql`
+      query lastFourNews {
+        noticias(
+          pagination: {
+            limit: 4
+          } 
+          sort: ["publishedAt:DESC"]
+        ) {
+          data {
+            attributes {
+              Titulo
+              slug
+              publishedAt
+              image {
+                data {
+                  attributes {
+                    url
+                  }
+                }
+              }
+              categoria {
+                data {
+                  attributes {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        } 
+      }
+    `
+  });
+
+  return {
+    props: {
+      homePage: homePage.page.data.attributes,
+      latestNews: latestNews.noticias.data,
+      apiUrl: API_URL,
+    }
+  }
 }

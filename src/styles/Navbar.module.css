@@ -96,7 +96,7 @@
 
 @media screen and (min-width: 768px) {
   .menu__container {
-    margin: 10px 24px;
+    margin: 0 24px;
   }
 }
 
@@ -106,7 +106,7 @@
   }
 
   .menu__container {
-    margin: 10px auto;
+    margin: 0 auto;
   }
 
   .navbar {
