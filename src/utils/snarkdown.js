@@ -71,7 +71,7 @@ export default function mdToHTML(md, prevLinks) {
 			inner = mdToHTML(outdent(token[5].replace(/^\s*[>*+.-]/gm, '')));
 			if (t=='>') t = 'blockquote';
 			else {
-				t = t.match(/\./) ? 'ol' : 'ul';
+				t = t.match(/\./) ? 'ol' : 'ul class="custom-list"';
 				inner = inner.replace(/^(.*)(\n|$)/gm, '<li>$1</li>');
 			}
 			chunk = '<'+t+'>' + inner + '</'+t+'>';

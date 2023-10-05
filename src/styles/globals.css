@@ -40,8 +40,10 @@
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135;
 
+  /* Colors */
   --primary-green: 41, 123, 64;
   --background-green: 41, 123, 64, 0.4;
+  --dark-gray: 92, 92, 92;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -128,12 +130,28 @@ a:hover {
 
 /* Page Global */
 
+ul.custom-list {
+  list-style: inside;
+  list-style-type: none;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+ul.custom-list li::before {
+  content: "▪";
+  margin-bottom: 5px;
+  padding-right: 5px;
+  color: rgb(var(--primary-green));
+  display: inline-block;
+}
+
 .section-container {
   max-width: 1100px;
-  padding: 15px 20px;
+  padding: 20px 15px;
   margin: 0 auto;
 
   @media screen and (min-width: 768px) {
+    padding: 64px 15px;
     margin: 10px 24px;
   }
 
@@ -148,7 +166,7 @@ a:hover {
   gap: 20px;
 }
 
-.two-columns-right section:nth-child(1) {
+.two-columns-right>div:nth-child(1) {
   width: 100%;
 
   @media screen and (min-width: 1024px) {
@@ -156,7 +174,7 @@ a:hover {
   }
 }
 
-.two-columns-right section:nth-child(2) {
+.two-columns-right>div:nth-child(2) {
   width: 100%;
 
   @media screen and (min-width: 1024px) {
@@ -164,6 +182,51 @@ a:hover {
   }
 }
 
+.two-columns-left {
+  display: flex;
+  flex-flow: column-reverse wrap;
+  gap: 20px;
+
+  @media screen and (min-width: 1024px) {
+    flex-flow: row wrap;
+  }
+}
+
+.two-columns-left>div:nth-child(1) {
+  width: 100%;
+
+  @media screen and (min-width: 1024px) {
+    width: calc(25% - 10px);
+  }
+}
+
+.two-columns-left>div:nth-child(2) {
+  width: 100%;
+
+  @media screen and (min-width: 1024px) {
+    width: calc(75% - 10px);
+  }
+}
+
+.section-title {
+  padding-left: 10px;
+  border-left: 5px solid rgb(var(--primary-green));
+  margin: 15px 0 30px;
+  font-size: 2rem;
+}
+
+.section-title-md {
+  padding-left: 10px;
+  border-left: 5px solid rgb(var(--primary-green));
+  font-size: 1.2rem;
+}
+
+.margin-column {
+  @media screen and (min-width: 1024px) {
+    margin-top: 84px;
+    padding-top: 15px;
+  }
+}
 
 /* Hero-slider */
 
@@ -175,4 +238,24 @@ ul.slick-dots {
 
 .md-image-container img {
   width: 100%;
+}
+
+/* Shared components */
+
+.secondary-button {
+  margin: 20px 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: rgb(var(--dark-gray));
+}
+
+.secondary-button.center {
+  text-align: center;
+}
+.secondary-button__arrow {
+  transition: all ease 0.8s;
+}
+
+.secondary-button:hover .secondary-button__arrow {
+  padding-left: 5px;
 }

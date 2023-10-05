@@ -5,6 +5,7 @@ import Hero from "@/components/blocks/Hero";
 import Head from "next/head";
 import Noticias from "@/components/blocks/Noticias";
 import Recursos from "@/components/blocks/Recursos";
+import SecondaryButton from "@/components/shared/SecondaryButton";
 
 const Home = ({ homePage, latestNews, apiUrl }) => {
   const {
@@ -42,9 +43,15 @@ const Home = ({ homePage, latestNews, apiUrl }) => {
           }
         </Hero>
         <div className="section-container">
+          <h2 className="section-title">Noticias</h2>
           <div className="two-columns-right">
-            <Noticias data={latestNews} apiUrl={apiUrl} />
-            <Recursos />
+            <div>
+              <Noticias data={latestNews} apiUrl={apiUrl} />
+              <SecondaryButton text={'ver mas'} href={'/noticias'} center={true} />
+            </div>
+            <div>
+              <Recursos />
+            </div>
           </div>
         </div>
       </main>

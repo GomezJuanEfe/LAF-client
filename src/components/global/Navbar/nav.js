@@ -1,6 +1,7 @@
 import styles from '@/styles/Navbar.module.css'
 import Link from "next/link";
 import { FaBars, FaAngleRight } from 'react-icons/fa';
+import ActiveLink from '@/components/shared/ActiveLink';
 
 const Nav = ({ showMenu, handleShowMenu }) => {
   return (
@@ -33,12 +34,9 @@ const Nav = ({ showMenu, handleShowMenu }) => {
           role="menuitem"
           tabIndex={0}
         >
-          <Link
-            href="/"
-            // className={({ isActive }) => (isActive ? 'active-link' : '')} CONFIGURAR ESTILOS
-          >
+          <ActiveLink href={"/"} relative={true} >
             <h3>Home</h3>
-          </Link>
+          </ActiveLink>
         </li>
         <li
           className={styles.navbar__link}
@@ -47,12 +45,9 @@ const Nav = ({ showMenu, handleShowMenu }) => {
           role="menuitem"
           tabIndex={0}
         >
-          <Link
-            href="/blog"
-            // className={({ isActive }) => (isActive ? 'active-link' : '')} CONFIGURAR ESTILOS
-          >
-            <h3>Blog</h3>
-          </Link>
+          <ActiveLink href={"/noticias"} relative={true}>
+            <h3>Noticias</h3>
+          </ActiveLink>
         </li>
       </ul>
     </nav>
