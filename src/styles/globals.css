@@ -152,7 +152,7 @@ ul.custom-list li::before {
 
   @media screen and (min-width: 768px) {
     padding: 64px 15px;
-    margin: 10px 24px;
+    margin: 0 24px;
   }
 
   @media screen and (min-width: 1200px) {
@@ -225,6 +225,32 @@ ul.custom-list li::before {
   @media screen and (min-width: 1024px) {
     margin-top: 84px;
     padding-top: 15px;
+  }
+}
+
+.gray-background {
+  background-color: rgb(225, 225, 225);
+}
+
+.box-sizing-content {
+  box-sizing: content-box;
+}
+
+.light-title {
+  font-weight: normal;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.margin-bottom-40 {
+  margin-bottom: 20px;
+
+  @media screen and (min-width: 768px) {
+    margin-bottom: 20px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    margin-bottom: 40px;
   }
 }
 

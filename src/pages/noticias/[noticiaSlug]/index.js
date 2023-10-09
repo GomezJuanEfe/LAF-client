@@ -1,15 +1,16 @@
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client"
 import Noticia from "@/components/blocks/Noticia";
 import Head from "next/head";
+import Noticias from "@/components/blocks/Noticias";
 
-const noticiaBySlug = ({noticia}) => {
-
+const noticiaBySlug = ({noticia, apiUrl}) => {
   const { noticias: { data: [{ attributes: {
     Titulo,
     editor_content,
     publishedAt,
     seo,
-    categoria: { data: { attributes: { name: category}}}
+    categoria: { data: { attributes: { name: category}}},
+    blocks: [{ noticias: { data: relatedNews } }]
   } }] } } = noticia
 
   return (
@@ -29,6 +30,16 @@ const noticiaBySlug = ({noticia}) => {
             date={publishedAt}
           />
         </div>
+        <div className="gray-background box-sizing-content">
+          <div className="section-container related_news">
+          <h2 className="section-title-md margin-bottom-40">También te puede interesar</h2>
+            <Noticias
+              data={relatedNews}
+              apiUrl={apiUrl}
+              center
+            />
+          </div>
+        </div>
       </main>
     </>
   )
@@ -39,7 +50,7 @@ export default noticiaBySlug
 export const getServerSideProps = async ({ params }) => {
   const { noticiaSlug } =  params;
 
-  const API_URL = (process.env.API_BASE_URL).slice(0, -1);
+  const API_URL = (process.env.API_BASE_URL);
 
   const client = new ApolloClient({
     uri: `${API_URL}/graphql`,
@@ -48,7 +59,7 @@ export const getServerSideProps = async ({ params }) => {
 
   const {data: noticia} = await client.query({
     query: gql`
-      query pageBySlug($slug: String) {
+      query noticiaBySlug($slug: String) {
         noticias(
           filters: {
             slug: {
@@ -79,6 +90,34 @@ export const getServerSideProps = async ({ params }) => {
                   }
                 }
               }
+              blocks {
+                __typename
+                ...on ComponentBlocksRelatedArticles {
+                  noticias {
+                    data {
+                      attributes {
+                        Titulo
+                        publishedAt
+                        slug
+                        image {
+                          data {
+                            attributes {
+                              url
+                            }
+                          }
+                        }
+                        categoria {
+                          data {
+                            attributes {
+                              name
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -92,6 +131,7 @@ export const getServerSideProps = async ({ params }) => {
   return {
     props: {
       noticia,
+      apiUrl: API_URL
     }
   }
 }

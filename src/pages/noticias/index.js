@@ -24,7 +24,7 @@ const noticiasPage = ({ news, apiUrl, seo, categories }) => {
                 {
                   categoriesData.map(item => {
                     return (
-                      <ActiveLink href={`/noticias?category=${item.attributes.slug}`}>
+                      <ActiveLink href={`/noticias?category=${item.attributes.slug}`} key={item.attributes.slug}>
                         <li>
                           {item.attributes.name}
                         </li>
@@ -54,7 +54,7 @@ export default noticiasPage
 
 export const getServerSideProps = async ({ query }) => {
   const { category } = query;
-  const API_URL = (process.env.API_BASE_URL).slice(0, -1);
+  const API_URL = (process.env.API_BASE_URL);
 
   const client = new ApolloClient({
     uri: `${API_URL}/graphql`,

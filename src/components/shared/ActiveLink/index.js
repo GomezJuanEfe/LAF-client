@@ -9,17 +9,17 @@ function ActiveLink({ children, href, relative }) {
   if (href === router.pathname && relative === true) {
     style = {...style, color: 'rgb(41, 123, 64)'}
   }
- 
+
   const handleClick = (e) => {
     e.preventDefault()
     router.push(href)
   }
- 
+
   return (
     <a href={href} onClick={handleClick} style={style}>
       {children}
     </a>
   )
 }
- 
+
 export default ActiveLink

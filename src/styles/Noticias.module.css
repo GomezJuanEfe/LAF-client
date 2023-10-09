@@ -4,8 +4,13 @@
   flex-flow: row wrap;
 }
 
+.center {
+  justify-content: center;
+}
+
 .card_container {
   width: 100%;
+  max-width: 390px;
   position: relative;
 }
 

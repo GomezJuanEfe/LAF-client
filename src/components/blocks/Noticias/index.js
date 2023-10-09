@@ -2,9 +2,9 @@ import Card from './Card';
 import styles from '@/styles/Noticias.module.css'
 import { formatDate } from '@/utils';
 
-const Noticias = ({ data, apiUrl }) => {
+const Noticias = ({ data, apiUrl, center}) => {
   return (
-    <section className={styles.noticias_container}>
+    <section className={`${styles.noticias_container} ${center && styles.center}`}>
       {
         data.map(item => {
           return(

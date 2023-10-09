@@ -1,0 +1,13 @@
+.sponsors_containers {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  row-gap: 40px;
+  column-gap: 15px;
+  align-items: center;
+}
+
+.image_container {
+  height: 110px;
+  position: relative;
+}

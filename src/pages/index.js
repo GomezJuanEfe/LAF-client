@@ -6,11 +6,13 @@ import Head from "next/head";
 import Noticias from "@/components/blocks/Noticias";
 import Recursos from "@/components/blocks/Recursos";
 import SecondaryButton from "@/components/shared/SecondaryButton";
+import Sponsors from "@/components/blocks/Sponsors";
 
 const Home = ({ homePage, latestNews, apiUrl }) => {
   const {
+    recursos,
     seo,
-    blocks: [{Images: {data: heroImages}}]
+    blocks: [{Images: {data: heroImages}}, {sponsors: {data: sponsorsImages}}]
   } = homePage;
 
   return (
@@ -50,8 +52,19 @@ const Home = ({ homePage, latestNews, apiUrl }) => {
               <SecondaryButton text={'ver mas'} href={'/noticias'} center={true} />
             </div>
             <div>
-              <Recursos />
+              <Recursos
+                data={recursos}
+                apiUrl={apiUrl}
+              />
             </div>
+          </div>
+        </div>
+        <div className="gray-background box-sizing-content">
+          <div className="section-container">
+            <Sponsors
+              data={sponsorsImages}
+              apiUrl={apiUrl}
+            />
           </div>
         </div>
       </main>
@@ -63,7 +76,7 @@ export default Home
 
 export const getStaticProps = async () => {
 
-  const API_URL = (process.env.API_BASE_URL).slice(0, -1);
+  const API_URL = (process.env.API_BASE_URL);
 
   const client = new ApolloClient({
     uri: `${API_URL}/graphql`,
@@ -90,16 +103,39 @@ export const getStaticProps = async () => {
                   }
                 }
               }
+              recursos {
+                Title
+                Text
+                URL
+                Image {
+                  data {
+                    attributes {
+                      url
+                      width
+                      height
+                    }
+                  }
+                }
+              }
               blocks {
                 __typename
                 ...on ComponentBlocksHero {
-                  id
                   Images {
                     data {
                       attributes {
                         url
                         width
                         height
+                      }
+                    }
+                  }
+                }
+                ...on ComponentBlocksSponsors {
+                  sponsors {
+                    data {
+                      attributes {
+                        url
+                        name
                       }
                     }
                   }
